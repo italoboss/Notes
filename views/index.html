@@ -1,0 +1,76 @@
+<html ng-app="notes">
+<head>
+	<title>Notes</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container" style="margin-top:20px;"  ng-controller="notesCtrl">
+		
+		<div class="row clearfix" style="margin-bottom:10px;">
+			<div id="top-bar">
+				<div id="top-bar-content">
+					<span>Notes</span>
+				</div>
+			</div>
+		</div>
+
+        <div class="row clearfix" style="margin-bottom:10px;">
+            <div class="controls form-inline form-group">
+                <div class="col-md-2">
+                    <input id="noteContent" name="noteContent"  placeholder="Seu texto aqui" ng-model="noteContent"
+                           type="text" class="form-control input-small"> 
+                </div>                   
+                <div class="col-md-2">
+                    <button ng-click="addNote()" id="btnAdd" name="btnAdd" class="btn btn-primary">Adicionar</button>
+                </div>                     
+            </div>
+        </div>
+        <div class="row clearfix">
+        	<div class="div-note" ng-repeat="note in dataset">
+        		<span title="delete this note" style="cursor:pointer" ng-click="delNote(note.note_id)">x</span>
+        		{{note.content}}
+        	</div>                 
+        </div>
+    </div>
+
+	<script src="lib/angular/angular.min.js"></script>
+	<script> 
+        angular.module('notes', []);
+        angular.module('notes').controller('notesCtrl', function($scope, $http) {
+            $scope.noteContent = '';
+
+            $scope.getAllNotes = function() {
+                 $http({method: 'GET', url: '/db/readNotes'}).
+                    success(function(data, status) { 
+                        $scope.dataset = data;
+                    }).
+                    error(function(data, status) {
+                        $scope.dataset = data || "Request failed "; 
+                  }); 
+            }       
+
+            $scope.addNote = function() { 
+                $http({method: 'GET', url: '/db/addNote?noteContent=' + $scope.noteContent}).
+                    success(function(data, status) { 
+                        alert('Nova nota adicionada!');
+                        $scope.getAllNotes();
+                    });  
+            }
+
+            $scope.delNote = function(noteId) {
+                console.log(noteId);
+                if(confirm('Tem certeza que deseja [DELETAR] essa nota?'))
+                {
+                    $http({method: 'GET', url: '/db/delNote?id=' + noteId}).
+                        success(function(data, status) {  
+                            $scope.getAllNotes();
+                        });
+                }
+            }
+
+            $scope.getAllNotes();
+        }); 
+    </script>    
+</body>
+</html>
