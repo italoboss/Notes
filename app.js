@@ -18,8 +18,10 @@ app.get('/' , function(req, res) {
     }
 });
 app.get('/db/doLogin', function(req, res) {
-    // console.log(' - Vamos fazer o login!');
     dbOperations.getUser(req, res);
+});
+app.get('/db/doLogout', function(req, res) {
+    req.session.user = null;
 });
 app.get('/db/readNotes', function(req, res){
     dbOperations.getNotes(req, res);

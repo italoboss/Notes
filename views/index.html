@@ -5,12 +5,13 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
-	<div class="container" style="margin-top:20px;"  ng-controller="notesCtrl">
+	<div class="container" ng-controller="notesCtrl">
 		
 		<div class="row clearfix" style="margin-bottom:10px;">
 			<div id="top-bar">
 				<div id="top-bar-content">
 					<span>Notes</span>
+                    <div class="btn btn-danger btn-xs" style="float: right;" ng-click="doLogout()">Sair</div>
 				</div>
 			</div>
 		</div>
@@ -67,6 +68,13 @@
                             $scope.getAllNotes();
                         });
                 }
+            }
+
+            $scope.doLogout = function() {
+                $http({method: 'GET', url: '/db/doLogout'}).
+                        success(function(data, status) {  
+                            window.location = "/";
+                        });
             }
 
             $scope.getAllNotes();

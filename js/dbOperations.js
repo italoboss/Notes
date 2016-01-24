@@ -51,11 +51,11 @@ module.exports = {
         var conString = process.env.DATABASE_URL || "pg://postgres:1234@localhost:5432/notesDB";
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("SELECT * FROM notes ");
+        var query = client.query("SELECT * FROM notes WHERE user_id = " + req.session.user.user_id);
         query.on("row", function (row, result) {
             result.addRow(row);
         });
-        query.on("end", function (result) {          
+        query.on("end", function (result) {
             client.end();
             res.writeHead(200, {'Content-Type': 'text/plain'});
             //console.log(result.rows);
@@ -69,7 +69,7 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("INSERT INTO notes (user_id, content) "+ 
-                                "values (" + 1 + ", '" + req.query.noteContent + "')");
+                                "values (" + req.session.user.user_id + ", '" + req.query.noteContent + "')");
         query.on("end", function (result) {          
             client.end();
             res.write('Sucesso');
