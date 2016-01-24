@@ -16,10 +16,10 @@
 		</div>
 
         <div class="row clearfix" style="margin-bottom:10px;">
-            <div class="controls form-inline form-group">
-                <div class="col-md-2">
-                    <input id="noteContent" name="noteContent"  placeholder="Seu texto aqui" ng-model="noteContent"
-                           type="text" class="form-control input-small"> 
+            <div class="controls">
+                <div class="col-md-4">
+                    <textarea id="noteContent" name="noteContent"  placeholder="Seu texto aqui" ng-model="noteContent"
+                           type="text" class="form-control"> </textarea>
                 </div>                   
                 <div class="col-md-2">
                     <button ng-click="addNote()" id="btnAdd" name="btnAdd" class="btn btn-primary">Adicionar</button>
@@ -28,7 +28,7 @@
         </div>
         <div class="row clearfix">
         	<div class="div-note" ng-repeat="note in dataset">
-        		<span title="delete this note" style="cursor:pointer" ng-click="delNote(note.note_id)">x</span>
+        		<span title="Deletar" style="cursor:pointer; margin-right:10px;" ng-click="delNote(note.note_id)">x</span>
         		{{note.content}}
         	</div>                 
         </div>
@@ -46,8 +46,8 @@
                         $scope.dataset = data;
                     }).
                     error(function(data, status) {
-                        $scope.dataset = data || "Request failed "; 
-                  }); 
+                        $scope.dataset = data || "Request failed ";
+                    });
             }       
 
             $scope.addNote = function() { 

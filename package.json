@@ -4,18 +4,19 @@
   "description": "Notes App using Node.js + Angular.js + PostgreSQL",
   "main": "app.js",
   "dependencies": {
-    "http": "~0.0.0",
-    "request": "~2.36.0",
-    "express": "~4.4.5",
-    "logfmt": "~1.1.2",
     "body-parser": "~1.6.2",
-    "cookie-parser": "~1.0.1"
+    "cookie-parser": "~1.0.1",
+    "express": "^4.4.5",
+    "express-session": "~1.7.6",
+    "http": "~0.0.0",
+    "logfmt": "~1.1.2",
+    "request": "~2.36.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
-  }, 
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/----"
