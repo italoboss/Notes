@@ -1,0 +1,56 @@
+<html ng-app="notesLogin">
+<head>
+	<title>Notes - Login</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container" style="width:400px; margin-top:50px;" ng-controller="notesLoginCtrl">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+			    <h3 class="panel-title text-center">Notes App</h3>
+			</div>
+			<div class="panel-body">
+			    <div class="form-group">
+	                <input class="form-control" type="text" placeholder="Login" name="login" ng-model="login" ng-keypress="enter($event)">
+	            </div> 
+				<div class="form-group">
+					<input class="form-control" type="password" placeholder="Senha" name="password" ng-model="password" ng-keypress="enter($event)"> 
+				</div>
+				<div class="form-group">
+					<div class="btn btn-primary btn-block" ng-click="connect()">Conectar</div>
+				</div>
+				<span class="label label-danger">{{errorMsg}}</span>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="lib/angular/angular.min.js"></script>
+	<script> 
+        angular.module('notesLogin', []);
+        angular.module('notesLogin').controller('notesLoginCtrl', function($scope, $http) {
+
+            $scope.connect = function() {
+                $http({method: 'GET', url: '/db/doLogin?login=' + $scope.login + '&password=' + $scope.password}).
+                    success(function(data, status) {
+                        if (data != 'Sucesso')
+                        	$scope.errorMsg = data;
+                        else
+                        	window.location = "/";
+                    }).
+                    error(function(data, status) {
+                        $scope.errorMsg = data || "Falha em conectar.";
+                    });  
+            }
+
+            $scope.enter = function(keyEvent) {
+            	if(keyEvent.which === 13) {
+            		$scope.connect();
+            	}
+            }
+
+        }); 
+    </script> 
+
+</body>
+</html>

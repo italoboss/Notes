@@ -22,17 +22,6 @@ body {
 	font-size: 20px;
 }
 
-#main-content {
-	margin-top: 20px;
-	margin-right: auto;
-	margin-left: auto;
-	width: 96%;
-	min-height: 420px;
-	/*border: 1px solid #EDEDED;*/
-	border: 1px solid #888;
-	border-radius: 6px;
-}
-
 .div-note {
 	display: inline-block;
 	margin: 10px;
@@ -40,4 +29,5 @@ body {
 	width: 250px;
 	min-height: 200px;
 	background-color: #ffff99;
+	box-shadow: 0px 3px 5px #D0D0D0;
 }

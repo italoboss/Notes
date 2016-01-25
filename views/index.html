@@ -5,21 +5,22 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
-	<div class="container" style="margin-top:20px;"  ng-controller="notesCtrl">
+	<div class="container" ng-controller="notesCtrl">
 		
 		<div class="row clearfix" style="margin-bottom:10px;">
 			<div id="top-bar">
 				<div id="top-bar-content">
 					<span>Notes</span>
+                    <div class="btn btn-danger btn-xs" style="float: right;" ng-click="doLogout()">Sair</div>
 				</div>
 			</div>
 		</div>
 
         <div class="row clearfix" style="margin-bottom:10px;">
-            <div class="controls form-inline form-group">
-                <div class="col-md-2">
-                    <input id="noteContent" name="noteContent"  placeholder="Seu texto aqui" ng-model="noteContent"
-                           type="text" class="form-control input-small"> 
+            <div class="controls">
+                <div class="col-md-4">
+                    <textarea id="noteContent" name="noteContent"  placeholder="Seu texto aqui" ng-model="noteContent"
+                           type="text" class="form-control"> </textarea>
                 </div>                   
                 <div class="col-md-2">
                     <button ng-click="addNote()" id="btnAdd" name="btnAdd" class="btn btn-primary">Adicionar</button>
@@ -28,7 +29,7 @@
         </div>
         <div class="row clearfix">
         	<div class="div-note" ng-repeat="note in dataset">
-        		<span title="delete this note" style="cursor:pointer" ng-click="delNote(note.note_id)">x</span>
+        		<span title="Deletar" style="cursor:pointer; margin-right:10px;" ng-click="delNote(note.note_id)">x</span>
         		{{note.content}}
         	</div>                 
         </div>
@@ -46,8 +47,8 @@
                         $scope.dataset = data;
                     }).
                     error(function(data, status) {
-                        $scope.dataset = data || "Request failed "; 
-                  }); 
+                        $scope.dataset = data || "Request failed ";
+                    });
             }       
 
             $scope.addNote = function() { 
@@ -67,6 +68,13 @@
                             $scope.getAllNotes();
                         });
                 }
+            }
+
+            $scope.doLogout = function() {
+                $http({method: 'GET', url: '/db/doLogout'}).
+                        success(function(data, status) {  
+                            window.location = "/";
+                        });
             }
 
             $scope.getAllNotes();
