@@ -1,23 +1,14 @@
+var pg = require('pg');
+var dbName = "notesDB";
+var dbPass = "1234";
+var conString = process.env.DATABASE_URL || "pg://postgres:"+dbPass+"@localhost:5432/"+dbName;
+
+// FUNCOES DE OPERACOES COM O BANCO DE DADOS
 module.exports = {
-    getUsers: function(req, res) {    
-        var pg = require('pg');
-        var conString = process.env.DATABASE_URL || "pg://postgres:1234@localhost:5432/notesDB";
-        var client = new pg.Client(conString);
-        client.connect();
-        var query = client.query("SELECT * FROM users ");
-        query.on("row", function (row, result) { 
-            result.addRow(row);
-        });
-        query.on("end", function (result) {          
-            client.end();
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.write(JSON.stringify(result.rows, null, "    ") + "\n");
-            res.end();  
-        });
-    },
-    getUser: function(req, res) {    
-        var pg = require('pg');
-        var conString = process.env.DATABASE_URL || "pg://postgres:1234@localhost:5432/notesDB";
+    /*
+     * Funcao para validar um usuario cadastrado atraves dos campos 'login' e 'password'.
+     */
+    validateUser: function(req, res) {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("SELECT * FROM users WHERE login = '" + req.query.login + "'");
@@ -46,9 +37,10 @@ module.exports = {
             }
         });
     },
+    /*
+     * Funcao para obter as notas cadastradas associadas ao usuario.
+     */
     getNotes: function(req, res) {
-        var pg = require('pg');
-        var conString = process.env.DATABASE_URL || "pg://postgres:1234@localhost:5432/notesDB";
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("SELECT * FROM notes WHERE user_id = " + req.session.user.user_id);
@@ -63,9 +55,10 @@ module.exports = {
             res.end();  
         });
     },
-    addNote: function(req, res){
-        var pg = require('pg');          
-        var conString = process.env.DATABASE_URL ||  "pg://postgres:1234@localhost:5432/notesDB";
+    /*
+     * Funcao para adicionar uma nova nota, associando-a ao usuario logado.
+     */
+    addNote: function(req, res) {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("INSERT INTO notes (user_id, content) "+ 
@@ -76,9 +69,10 @@ module.exports = {
             res.end();
         });
     },    
-     delNote: function(req, res){
-        var pg = require('pg');           
-        var conString = process.env.DATABASE_URL ||  "pg://postgres:1234@localhost:5432/notesDB";
+    /*
+     * Funcao para deletar uma nota associanda ao usuario logado.
+     */
+    delNote: function(req, res) {
         var client = new pg.Client(conString);
         client.connect();         
         var query = client.query( "DELETE FROM notes WHERE note_id = " + req.query.id);    

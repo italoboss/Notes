@@ -18,7 +18,7 @@ app.get('/' , function(req, res) {
     }
 });
 app.get('/db/doLogin', function(req, res) {
-    dbOperations.getUser(req, res);
+    dbOperations.validateUser(req, res);
 });
 app.get('/db/doLogout', function(req, res) {
     req.session.user = null;

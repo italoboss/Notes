@@ -2,9 +2,12 @@
 <head>
 	<title>Notes - Login</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="controllers/notesLoginCtrl.js"></script>
 </head>
 <body>
-	<div class="container" style="width:400px; margin-top:50px;" ng-controller="notesLoginCtrl">
+	<div class="container login-ctn" ng-controller="notesLoginCtrl">
 		<div class="panel panel-success">
 			<div class="panel-heading">
 			    <h3 class="panel-title text-center">Notes App</h3>
@@ -23,34 +26,5 @@
 			</div>
 		</div>
 	</div>
-
-
-	<script src="lib/angular/angular.min.js"></script>
-	<script> 
-        angular.module('notesLogin', []);
-        angular.module('notesLogin').controller('notesLoginCtrl', function($scope, $http) {
-
-            $scope.connect = function() {
-                $http({method: 'GET', url: '/db/doLogin?login=' + $scope.login + '&password=' + $scope.password}).
-                    success(function(data, status) {
-                        if (data != 'Sucesso')
-                        	$scope.errorMsg = data;
-                        else
-                        	window.location = "/";
-                    }).
-                    error(function(data, status) {
-                        $scope.errorMsg = data || "Falha em conectar.";
-                    });  
-            }
-
-            $scope.enter = function(keyEvent) {
-            	if(keyEvent.which === 13) {
-            		$scope.connect();
-            	}
-            }
-
-        }); 
-    </script> 
-
 </body>
 </html>
