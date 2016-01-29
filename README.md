@@ -1,18 +1,16 @@
 # Notes
 
- Descrição
+ ### Descrição
  -------------
    Uma aplicação para criação de notas associadas a um usuário.
  
- 
- Tecnologias utilizadas
+ ### Tecnologias utilizadas
  -------------
    Server side: node.js
    Front-end: angular.js
    Database: PostgreSQL
    
-   
- Para rodar a aplicação
+ ### Para rodar a aplicação
  -------------
    - Importar o banco de dados, disponibilizado no arquivo "notesDB.backup"
    - Modificar no arquivo "js/dbOperations.js" os seguintes parâmetros:
