@@ -1,7 +1,10 @@
 var pg = require('pg');
 var dbName = "notesDB";
+var dbUser = "postgres";
 var dbPass = "1234";
-var conString = process.env.DATABASE_URL || "pg://postgres:"+dbPass+"@localhost:5432/"+dbName;
+var dbHost = "localhost";
+var dbPort = "5432";
+var conString = process.env.DATABASE_URL || "pg://"+dbUser+":"+dbPass+"@"+dbHost+":"+dbPort+"/"+dbName;
 
 // FUNCOES DE OPERACOES COM O BANCO DE DADOS
 module.exports = {
@@ -11,7 +14,7 @@ module.exports = {
     validateUser: function(req, res) {
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("SELECT * FROM users WHERE login = '" + req.query.login + "'");
+        var query = client.query("SELECT * FROM users WHERE login = $1", [req.query.login]);
         query.on("row", function (row, result) { 
             result.addRow(row);
         });
@@ -43,7 +46,7 @@ module.exports = {
     getNotes: function(req, res) {
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("SELECT * FROM notes WHERE user_id = " + req.session.user.user_id);
+        var query = client.query("SELECT * FROM notes WHERE user_id = $1", [req.session.user.user_id]);
         query.on("row", function (row, result) {
             result.addRow(row);
         });
@@ -61,9 +64,9 @@ module.exports = {
     addNote: function(req, res) {
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("INSERT INTO notes (user_id, content) "+ 
-                                "values (" + req.session.user.user_id + ", '" + req.query.noteContent + "')");
-        query.on("end", function (result) {          
+        var query = client.query("INSERT INTO notes (user_id, content, dt_created, color) VALUES ($1, $2, $3, $4)", 
+                    [req.session.user.user_id, req.query.noteContent, new Date().toLocaleDateString(), req.query.noteColor]);
+        query.on("end", function (result) {
             client.end();
             res.write('Sucesso');
             res.end();
@@ -74,12 +77,12 @@ module.exports = {
      */
     delNote: function(req, res) {
         var client = new pg.Client(conString);
-        client.connect();         
-        var query = client.query( "DELETE FROM notes WHERE note_id = " + req.query.id);    
-        query.on("end", function (result) {          
-            client.end(); 
+        client.connect();
+        var query = client.query("DELETE FROM notes WHERE note_id = $1", [req.query.id]);
+        query.on("end", function (result) {
+            client.end();
             res.write('Sucesso');
-            res.end();  
+            res.end();
         });
     }
 };

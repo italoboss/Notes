@@ -1,8 +1,10 @@
 angular.module('notesLogin', []);
 angular.module('notesLogin').controller('notesLoginCtrl', function($scope, $http) {
-
+    /*
+     * Funcao para autenticar, conectar um usuario e redirecionar para a pagina principal.
+     */
     $scope.connect = function() {
-        $http({method: 'GET', url: '/db/doLogin?login=' + $scope.login + '&password=' + $scope.password}).
+        $http({method: 'POST', url: '/db/doLogin?login=' + $scope.login + '&password=' + $scope.password}).
             success(function(data, status) {
                 if (data != 'Sucesso')
                 	$scope.errorMsg = data;
@@ -13,7 +15,9 @@ angular.module('notesLogin').controller('notesLoginCtrl', function($scope, $http
                 $scope.errorMsg = data || "Falha em conectar.";
             });  
     }
-
+    /*
+     * Funcao para verificar se foi teclado o 'enter'.
+     */
     $scope.enter = function(keyEvent) {
     	if(keyEvent.which === 13) {
     		$scope.connect();

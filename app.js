@@ -17,19 +17,20 @@ app.get('/' , function(req, res) {
         res.sendfile('views/login.html');
     }
 });
-app.get('/db/doLogin', function(req, res) {
+app.post('/db/doLogin', function(req, res) {
     dbOperations.validateUser(req, res);
 });
-app.get('/db/doLogout', function(req, res) {
+app.post('/db/doLogout', function(req, res) {
     req.session.user = null;
+    res.end();
 });
-app.get('/db/readNotes', function(req, res){
+app.post('/db/readNotes', function(req, res){
     dbOperations.getNotes(req, res);
 });
-app.get('/db/addNote', function(req, res){
+app.post('/db/addNote', function(req, res){
     dbOperations.addNote(req, res);
 });
-app.get('/db/delNote', function(req, res){
+app.post('/db/delNote', function(req, res){
     dbOperations.delNote(req, res);
 });
 app.set('port', process.env.PORT || 3001);

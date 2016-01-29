@@ -1,10 +1,12 @@
 <html ng-app="notes">
 <head>
+    <meta charset="UTF-8">
 	<title>Notes</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="lib/angular/angular.min.js"></script>
     <script src="controllers/notesCtrl.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
 	<div class="container" ng-controller="notesCtrl">
@@ -12,28 +14,35 @@
 		<div class="row clearfix">
 			<div id="top-bar">
 				<div id="top-bar-content">
-					<span>Notes</span>
-                    <div class="btn btn-danger btn-xs" style="float: right;" ng-click="doLogout()">Sair</div>
+                    <span><i class="material-icons w3-large">description</i> Notes</span>
+                    <button class="btn btn-danger btn-xs" ng-click="doLogout()"> Sair </button>
+                    <button class="btn btn-success btn-xs" ng-click="newNoteClick()"> Adicionar Nota </button>
 				</div>
 			</div>
 		</div>
 
-        <div class="row clearfix">
+        <div id="newNote" class="row clearfix" ng-show="addClicked">
             <div class="controls">
-                <div class="col-md-4">
-                    <textarea id="noteContent" name="noteContent"  placeholder="Seu texto aqui" ng-model="noteContent"
-                           type="text" class="form-control"> </textarea>
-                </div>                   
-                <div class="col-md-2">
-                    <button ng-click="addNote()" id="btnAdd" name="btnAdd" class="btn btn-primary">Adicionar</button>
-                </div>                     
+                <textarea id="noteContent" name="noteContent"  placeholder="Seu texto aqui" ng-model="noteContent"
+                       type="text" class="form-control"> </textarea>
+                <div class="div-colors">
+                    Cor da nota: 
+                    <button class="bt-color y" ng-click="changeColorNote('y')"></button>
+                    <button class="bt-color r" ng-click="changeColorNote('r')"></button>
+                    <button class="bt-color g" ng-click="changeColorNote('g')"></button>
+                </div>
+                <button ng-click="addNote()" id="btnAdd" name="btnAdd" class="btn btn-primary btn-sm" ng-disabled="!noteContent">OK</button>
             </div>
         </div>
         <div class="row clearfix">
-        	<div class="div-note" ng-repeat="note in dataset">
-        		<span title="Deletar esta nota" class="div-note-bt" ng-click="delNote(note.note_id)">x</span>
-        		{{note.content}}
-        	</div>
+            <div ng-repeat="note in dataset">
+            	<div class="div-note" ng-class="note.color" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+                    <span title="Deletar esta nota" class="div-note-bt" ng-show="isHover" ng-click="delNote(note.note_id)">
+                        <i class="material-icons w3-large">delete</i>
+                    </span>
+                    {{note.content}}
+            	</div>
+            </div>
         </div>
     </div>
 </body>
